@@ -18,17 +18,16 @@ mkdir -p "${AGENTS_SKILLS_DIR}"
 
 # 2. Link into ~/.agents/skills (Standard Agent Skills location used by Claude Code)
 TARGET_LINK="${AGENTS_SKILLS_DIR}/${SKILL_NAME}"
-if [ -L "${TARGET_LINK}" ] || [ -d "${TARGET_LINK}" ]; then
-    rm -rf "${TARGET_LINK}"
-fi
-ln -sf "${SOURCE_DIR}" "${TARGET_LINK}"
+rm -rf "${TARGET_LINK}"
+ln -s "${SOURCE_DIR}" "${TARGET_LINK}"
 echo "  ✓ Linked to ${TARGET_LINK} (Claude Code & Agents standard)"
 
 # 3. Link into Antigravity / Gemini if directories exist
 if [ -d "${HOME}/.gemini" ]; then
     mkdir -p "${GEMINI_ANTIGRAVITY_DIR}" "${GEMINI_SKILLS_DIR}"
-    ln -sf "${TARGET_LINK}" "${GEMINI_ANTIGRAVITY_DIR}/${SKILL_NAME}"
-    ln -sf "${TARGET_LINK}" "${GEMINI_SKILLS_DIR}/${SKILL_NAME}"
+    rm -rf "${GEMINI_ANTIGRAVITY_DIR}/${SKILL_NAME}" "${GEMINI_SKILLS_DIR}/${SKILL_NAME}"
+    ln -s "${TARGET_LINK}" "${GEMINI_ANTIGRAVITY_DIR}/${SKILL_NAME}"
+    ln -s "${TARGET_LINK}" "${GEMINI_SKILLS_DIR}/${SKILL_NAME}"
     echo "  ✓ Linked to Antigravity (${GEMINI_ANTIGRAVITY_DIR}/${SKILL_NAME})"
 fi
 

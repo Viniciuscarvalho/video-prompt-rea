@@ -4,26 +4,39 @@
 > Feed any video URL or file to your AI agent and extract the exact creative prompts, camera choreography, lighting setup, and generation pipeline.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Compatible with Antigravity](https://img.shields.io/badge/Agent-Antigravity-4285F4.svg)](#antigravity)
-[![Compatible with Claude Code](https://img.shields.io/badge/Agent-Claude%20Code-D97706.svg)](#claude-code)
-[![Compatible with OpenAI Codex / GPT](https://img.shields.io/badge/Agent-Codex%20%2F%20GPT-10A37F.svg)](#openai-codex--chatgpt)
+[![Compatible with Antigravity](https://img.shields.io/badge/Agent-Antigravity-4285F4.svg)](#-multi-platform-portability)
+[![Compatible with Claude Code](https://img.shields.io/badge/Agent-Claude%20Code-D97706.svg)](#-multi-platform-portability)
+[![Compatible with OpenAI Codex / GPT](https://img.shields.io/badge/Agent-Codex%20%2F%20GPT-10A37F.svg)](#-multi-platform-portability)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ---
 
-## 💡 The Problem
+## 💡 What is video-prompt-rea?
 
-You see a stunning video on Twitter/X, YouTube, or TikTok — an impossible cinematic camera move, a photorealistic AI scene, or an ultra-clean tech launch demo.
+You see an inspiring video on Twitter/X, YouTube, or TikTok — an impossible cinematic drone dive, a photorealistic AI character, or an ultra-clean tech launch demo.
 
 You ask:
 - *What prompt was used to generate this?*
 - *Is this Text-to-Video (Runway / Kling / Sora) or Image-to-Video (Midjourney + Motion)?*
 - *What camera lens, lighting direction, and easing curve created this specific feel?*
 
-`video-prompt-rea` is an open-source **Agent Skill** that applies the **REA (Reverse Engineering Analysis)** methodology to deconstruct any video into reproduction-ready prompts for all major video models.
+`video-prompt-rea` is an open-source **Agent Skill** that applies the **REA (Reverse Engineering Analysis)** methodology. It automates keyframe extraction, analyzes visual composition across 4 layers, and outputs production-ready prompts tailored for every major generative video platform.
 
 ---
 
-## ⚡ How It Works: The 4-Layer REA Framework
+## 📦 What's Included
+
+- **`SKILL.md`**: The universal Agent Skill specification, adhering to open agent conventions (progressive disclosure, YAML frontmatter, standardized tool workflows).
+- **`scripts/extract_frames.py`**: A fast, zero-dependency Python script that downloads videos from Twitter/X (via native API resolution) or other platforms and extracts keyframe timelines with `ffmpeg`.
+- **`references/model_syntax.md`**: Model-specific prompt engineering syntaxes for **Runway Gen-3 Alpha**, **Kling AI (v1.5)**, **Luma Dream Machine**, **Sora**, **Hailuo (Minimax)**, and **Midjourney/Flux I2V**.
+- **`references/cinematography_glossary.md`**: Complete glossary of cinema terminology (camera vectors, focal lengths, aperture, volumetric lighting, color grading).
+- **`install.sh`**: One-command installer that links the skill into standard agent paths (`~/.agents/skills/`) and Antigravity.
+- **`PORTABILITY.md`**: Step-by-step instructions for porting this skill into **Claude Code**, **Claude.ai Projects**, and **OpenAI Custom GPTs**.
+- **`examples/`**: Real-world deconstruction case studies (e.g., high-end tech product launch video).
+
+---
+
+## ⚡ The 4-Layer REA Framework
 
 ```mermaid
 flowchart TD
@@ -44,9 +57,9 @@ flowchart TD
 
 ---
 
-## 🚀 Quick Install
+## 🚀 How to Install
 
-### One-line Install (macOS / Linux)
+### Method 1: Automatic 1-Line Install (Recommended)
 
 ```bash
 git clone https://github.com/Viniciuscarvalho/video-prompt-rea.git
@@ -54,34 +67,46 @@ cd video-prompt-rea
 ./install.sh
 ```
 
-The installer automatically links the skill to:
-- `~/.agents/skills/video-prompt-rea` (Universal agent standard, used by **Claude Code**)
+The installer automatically detects your environment and creates symlinks in:
+- `~/.agents/skills/video-prompt-rea` (Universal standard for **Claude Code** and other agents)
 - `~/.gemini/antigravity/skills/video-prompt-rea` (for **Antigravity**)
 
 ### Requirements
-- **Python 3.8+** (Uses built-in standard library; no extra pip packages required!)
-- **ffmpeg** (`brew install ffmpeg` on macOS, or `sudo apt install ffmpeg` on Ubuntu)
+- **Python 3.8+** (Zero pip dependencies; uses standard libraries `urllib`, `json`, `subprocess`)
+- **ffmpeg** (`brew install ffmpeg` on macOS, or `sudo apt install ffmpeg` on Linux)
 - *(Optional)* **yt-dlp** (`brew install yt-dlp`) for YouTube, Instagram, and TikTok links. Twitter/X URLs work out-of-the-box via built-in API resolution.
+
+### Method 2: Manual Install
+
+Clone or copy the directory directly into your agent's skills path:
+```bash
+git clone https://github.com/Viniciuscarvalho/video-prompt-rea.git ~/.agents/skills/video-prompt-rea
+```
 
 ---
 
-## 🎯 Usage
+## 🎯 How to Use
 
-### In Antigravity & Claude Code
-Simply paste any video link or local file in the chat:
+### 1. In Antigravity or Claude Code
+Once installed, simply send any video link or local video path directly in your chat:
+
 ```text
-Faça o REA deste vídeo: https://x.com/shapelayer/status/2119836576750395719
+Do a video REA on this: https://x.com/shapelayer/status/2119836576750395719
 ```
 or
 ```text
-Reverse engineer the prompt for this video: ./my_sample.mp4
+Faça o REA deste vídeo para extrair o prompt: ./my_video.mp4
 ```
 
-### In Terminal (CLI Keyframe Extraction)
-You can also run the bundled extractor script standalone:
+The agent activates the skill, downloads/samples the video frames, analyzes each layer, and outputs structured prompts.
+
+### 2. Standalone Terminal (CLI Extractor)
+You can run the bundled Python extractor manually without an agent:
+
 ```bash
 python3 scripts/extract_frames.py "https://x.com/user/status/123456789" --num-frames 6 --output-dir ./rea_output
 ```
+This inspects resolution, duration, FPS, and extracts keyframes to `./rea_output/frames/`.
 
 ---
 
@@ -96,49 +121,34 @@ python3 scripts/extract_frames.py "https://x.com/user/status/123456789" --num-fr
 
 ---
 
-## 📂 Repository Structure
+## 🌟 Real-World Example: Tech Launch Deconstruction
 
-```text
-video-prompt-rea/
-├── SKILL.md                          # Canonical Agent Skill specification & REA rules
-├── README.md                         # Documentation & Guide
-├── PORTABILITY.md                    # Porting guide for Claude Projects & Codex
-├── LICENSE                           # MIT License
-├── install.sh                        # Universal installer script
-├── scripts/
-│   └── extract_frames.py             # Zero-dependency video & keyframe extractor
-├── references/
-│   ├── model_syntax.md               # Prompt cheat sheet for Runway, Kling, Luma, Sora, I2V
-│   └── cinematography_glossary.md    # Optics, lenses, lighting, and camera movement terms
-└── examples/
-    ├── 01-tech-launch-shapelayer.md  # Real-world deconstruction of a 4K tech launch video
-    └── 02-cinematic-sci-fi.md        # Real-world deconstruction of a cinematic sci-fi shot
-```
-
----
-
-## 🌟 Real-World Example: @shapelayer Tech Launch Deconstruction
-
-*(Full breakdown in [`examples/01-tech-launch-shapelayer.md`](examples/01-tech-launch-shapelayer.md))*
+*(See full case study in [`examples/01-tech-launch-shapelayer.md`](examples/01-tech-launch-shapelayer.md))*
 
 ### Reconstructed Runway Gen-3 Alpha Prompt
 ```text
 Slow smooth cinematic push-in: High-end space-grey laptop open on a textured oak desk, displaying a glowing white software interface. Soft warm practical lamp light highlights the edge of the keyboard, subtle dust particles floating in air, shallow depth of field, high dynamic range, 4k commercial grade, photorealistic.
 ```
 
-### Reconstructed Midjourney v6.1 Hero Frame
+### Reconstructed Midjourney v6.1 Hero Frame (for Image-to-Video)
 ```text
 A cinematic ultra-clean close-up shot of a modern dark space-grey 16-inch laptop open on a warm rustic wooden desk, crisp illuminated display showing a minimalist modern web interface, warm glowing desk lamp casting soft golden light on the right, cool blue twilight window light from the left, shallow depth of field, sharp screen details, shot on 35mm lens, f/2.0 aperture, Apple commercial aesthetic --ar 16:9 --style raw --v 6.1
 ```
 
 ---
 
-## 🤝 Contributing
+## 🤝 How to Contribute
 
-Contributions are welcome! If you have optimized prompt templates for new generative video models (e.g. Wan2.1, Hunyuan, CogVideo, etc.) or cinematographic keywords, feel free to submit a Pull Request.
+We welcome contributions from prompt engineers, AI creators, and developers!
+
+1. Fork the repo and create a feature branch (`git checkout -b feature/new-model`).
+2. Add support for new generative video models in `references/model_syntax.md`.
+3. Add cinematography terminology in `references/cinematography_glossary.md`.
+4. Submit real-world case studies in `examples/`.
+5. Open a Pull Request! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
 ---
 
 ## 📄 License
 
-MIT © [Vinicius Carvalho](https://github.com/Viniciuscarvalho)
+MIT © 2026 [Vinicius Carvalho Marques](https://github.com/Viniciuscarvalho)
