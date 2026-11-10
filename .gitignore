@@ -1,0 +1,31 @@
+# Temporary outputs & video cache
+rea_output/
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.avi
+frames/
+/tmp/rea_*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*~
